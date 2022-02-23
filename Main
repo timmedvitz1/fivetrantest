@@ -1,0 +1,10 @@
+create or replace table transforms.all_events_daily_rollup as
+select
+  product_id,
+  account_id,
+  lineitem_id,
+  date(event_date) as date,
+  sum(quantity) as total_quantity_succeeded
+from webhooks.all_events_audit
+where status <> 'Failed'
+group by 1, 2, 3, 4
